@@ -17,8 +17,9 @@ export default function App() {
               <h6>amyrobson</h6>
               <p className=" text-zinc-500">1 month ago</p>
             </div>
-            <button className=" bg-indigo-600 text-white p-1 rounded-md w-20 font-bold hover:bg-indigo-300">
-              REPLY
+            <button className="flex items-center gap-3 rounded-md w-20 font-bold hover:bg-indigo-300">
+              <img src="./images/icon-reply.svg" />
+              <p style={{ color: "#5357B6" }}>REPLY</p>
             </button>
           </section>
           <p className=" text-gray-500">
