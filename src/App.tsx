@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import Card from "./components/Card";
 import { Comments } from "./types/dataType";
 import { getComments } from "./services/dataService";
+import ComponentList from "./components/ComponentList";
 
 export default function App() {
   const [allComments, setAllComments] = useState<Comments[]>([]);
+  // console.log(allComments);
 
   useEffect(() => {
     fetchComment();
@@ -15,19 +16,8 @@ export default function App() {
   };
 
   return (
-    <div className="bg-stone-200 h-screen flex flex-col justify-center items-center gap-5">
-      {allComments.map((item: Comments) => {
-        return (
-          <Card
-            user={item.user}
-            score={item.score}
-            content={item.content}
-            createAt={item.createAt}
-            id={item.id}
-            reply={item.reply}
-          />
-        );
-      })}
+    <div className="bg-stone-200 h-full overflow-hidden py-5 flex flex-col justify-center items-center gap-5">
+      <ComponentList item={allComments} />
     </div>
   );
 }

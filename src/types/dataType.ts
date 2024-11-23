@@ -6,11 +6,20 @@ export type User = {
   username: string;
 };
 
-export type Comments = {
-  id: string;
+export type Reply = {
+  id: number | string;
   content: string;
   createAt: string;
-  score: 12;
+  score: number;
+  replyingTo: string;
   user: User;
-  reply: [];
+};
+
+export type Comments = {
+  id: number | string;
+  content: string;
+  createAt: string;
+  score: number;
+  user: User;
+  replies: Reply[];
 };
