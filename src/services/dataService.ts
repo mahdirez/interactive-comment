@@ -1,7 +1,13 @@
 import axios from "axios";
-import { Comments } from "../types/dataType";
+import { Comments, User } from "../types/dataType";
 
 const API_URL = "http://localhost:5001/comments";
+const API_URL_CurrentUser = "http://localhost:5001/currentUser";
+
+export const getCurrentUser = async (): Promise<User> => {
+  const response = await axios.get(API_URL_CurrentUser);
+  return response.data;
+};
 
 export const getComments = async (): Promise<Comments[]> => {
   const response = await axios.get(API_URL);

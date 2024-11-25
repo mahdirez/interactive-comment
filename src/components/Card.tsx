@@ -1,11 +1,18 @@
-import { Comments, Reply } from "../types/dataType";
+import { useDataContext } from "../hooks/useDataContext";
+import { Comments, Reply, User } from "../types/dataType";
 
 type CardProps = {
   items: Comments;
 };
 
 function Card({ items }: CardProps) {
+  const { currentUser } = useDataContext();
+  console.log(currentUser);
+
   const renderComment = (comment: Comments | Reply, isReply = false) => {
+    console.log("Rendering comment:", comment);
+
+    const isCurrentUser = comment.user.username === currentUser?.username;
     return (
       <div className="flex w-screen items-center justify-center">
         {isReply && (
@@ -38,11 +45,25 @@ function Card({ items }: CardProps) {
                   </span>
                 )}
               </div>
-              <button className="flex items-center gap-3 rounded-md w-20 font-bold hover:bg-indigo-300">
-                <img src="./images/icon-reply.svg" alt="reply-icon" />
-                <p style={{ color: "#5357B6" }}>REPLY</p>
-              </button>
-              <button>delete</button>
+              <div className="flex">
+                {isCurrentUser ? (
+                  <>
+                    <button className="flex items-center gap-1 rounded-md justify-center p-1 w-20 font-bold text-red-500 hover:bg-red-100">
+                      <img src="./images/icon-delete.svg" alt="reply-icon" />
+                      <p>DELETE</p>
+                    </button>
+                    <button className="flex items-center gap-1 justify-center rounded-md p-1 w-20 font-bold hover:bg-indigo-300">
+                      <img src="./images/icon-edit.svg" alt="reply-icon" />
+                      <p style={{ color: "#5357B6" }}>EDIT</p>
+                    </button>
+                  </>
+                ) : (
+                  <button className="flex items-center gap-1 justify-center rounded-md p-1 w-20 font-bold hover:bg-indigo-300">
+                    <img src="./images/icon-reply.svg" alt="reply-icon" />
+                    <p style={{ color: "#5357B6" }}>REPLY</p>
+                  </button>
+                )}
+              </div>
             </div>
             <p className="text-gray-500">{comment.content}</p>
           </div>
