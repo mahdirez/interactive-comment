@@ -9,7 +9,7 @@ function Card({ items }: CardProps) {
     return (
       <div className="flex w-screen items-center justify-center">
         {isReply && (
-          <div className="ml-20 border-2 border-gray-300  self-stretch mr-4"></div>
+          <div className="ml-20 border border-gray-300  self-stretch mr-4"></div>
         )}
         <div
           className={`bg-white w-1/2 h-36 rounded p-6 flex gap-4 `}
@@ -42,6 +42,7 @@ function Card({ items }: CardProps) {
                 <img src="./images/icon-reply.svg" alt="reply-icon" />
                 <p style={{ color: "#5357B6" }}>REPLY</p>
               </button>
+              <button>delete</button>
             </div>
             <p className="text-gray-500">{comment.content}</p>
           </div>

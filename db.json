@@ -106,6 +106,20 @@
           }
         }
       ]
+    },
+    {
+      "id": "a718",
+      "content": "added comment",
+      "createAt": "now",
+      "score": 5,
+      "user": {
+        "image": {
+          "png": "/",
+          "webp": "/"
+        },
+        "username": "new user"
+      },
+      "replies": []
     }
   ]
 }
