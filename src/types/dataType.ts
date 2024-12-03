@@ -7,7 +7,7 @@ export type User = {
 };
 
 export type Reply = {
-  id: number | string;
+  id: any;
   content: string;
   createAt: string;
   score: number;
@@ -16,7 +16,7 @@ export type Reply = {
 };
 
 export type Comments = {
-  id: number | string;
+  id: any;
   content: string;
   createAt: string;
   score: number;

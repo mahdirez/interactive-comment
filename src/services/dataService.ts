@@ -26,6 +26,6 @@ export const updateComment = async (item: Comments): Promise<Comments> => {
   return response.data;
 };
 
-export const deleteComment = async (id: string): Promise<void> => {
+export const deleteComment = async (id: any): Promise<void> => {
   await axios.delete(`${API_URL}/${id}`);
 };

@@ -6,12 +6,10 @@ type CardProps = {
 };
 
 function Card({ items }: CardProps) {
-  const { currentUser } = useDataContext();
-  console.log(currentUser);
+  const { currentUser, deleteComment } = useDataContext();
+  // console.log(currentUser);
 
   const renderComment = (comment: Comments | Reply, isReply = false) => {
-    console.log("Rendering comment:", comment);
-
     const isCurrentUser = comment.user.username === currentUser?.username;
     return (
       <div className="flex w-screen items-center justify-center">
@@ -40,7 +38,7 @@ function Card({ items }: CardProps) {
                 <p className="text-zinc-500">{comment.createAt}</p>
                 {isReply && (
                   <span className="text-sm text-gray-500">
-                    replying to{" "}
+                    replying to
                     <strong>@{(comment as Reply).replyingTo}</strong>
                   </span>
                 )}
@@ -48,7 +46,10 @@ function Card({ items }: CardProps) {
               <div className="flex">
                 {isCurrentUser ? (
                   <>
-                    <button className="flex items-center gap-1 rounded-md justify-center p-1 w-20 font-bold text-red-500 hover:bg-red-100">
+                    <button
+                      onClick={() => deleteComment(comment.id)}
+                      className="flex items-center gap-1 rounded-md justify-center p-1 w-20 font-bold text-red-500 hover:bg-red-100"
+                    >
                       <img src="./images/icon-delete.svg" alt="reply-icon" />
                       <p>DELETE</p>
                     </button>
@@ -58,7 +59,10 @@ function Card({ items }: CardProps) {
                     </button>
                   </>
                 ) : (
-                  <button className="flex items-center gap-1 justify-center rounded-md p-1 w-20 font-bold hover:bg-indigo-300">
+                  <button
+                    className="flex items-center gap-1 justify-center rounded-md p-1 w-20 font-bold hover:bg-indigo-300"
+                    onClick={() => deleteComment(comment.id)}
+                  >
                     <img src="./images/icon-reply.svg" alt="reply-icon" />
                     <p style={{ color: "#5357B6" }}>REPLY</p>
                   </button>
