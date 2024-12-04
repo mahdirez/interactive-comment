@@ -1,5 +1,6 @@
 import { useDataContext } from "../hooks/useDataContext";
-import { Comments, Reply, User } from "../types/dataType";
+import { Comments, Reply } from "../types/dataType";
+import { formatDistanceToNow } from "date-fns";
 
 type CardProps = {
   items: Comments;
@@ -7,17 +8,18 @@ type CardProps = {
 
 function Card({ items }: CardProps) {
   const { currentUser, deleteComment } = useDataContext();
-  // console.log(currentUser);
 
   const renderComment = (comment: Comments | Reply, isReply = false) => {
     const isCurrentUser = comment.user.username === currentUser?.username;
+    console.log(comment.createdAt);
+
     return (
       <div className="flex w-screen items-center justify-center">
         {isReply && (
           <div className="ml-20 border border-gray-300  self-stretch mr-4"></div>
         )}
         <div
-          className={`bg-white w-1/2 h-36 rounded p-6 flex gap-4 `}
+          className={`bg-white w-1/2 min-h-36 rounded p-6 flex gap-4 my-5`}
           key={comment.id}
         >
           <div className="bg-gray-300 p-2 flex flex-col items-center justify-between rounded-md">
@@ -35,13 +37,9 @@ function Card({ items }: CardProps) {
                   className="w-12"
                 />
                 <h6 className="font-bold">{comment.user.username}</h6>
-                <p className="text-zinc-500">{comment.createAt}</p>
-                {isReply && (
-                  <span className="text-sm text-gray-500">
-                    replying to
-                    <strong>@{(comment as Reply).replyingTo}</strong>
-                  </span>
-                )}
+                <span className="text-sm text-gray-500">
+                  <strong>{comment.createdAt}</strong>
+                </span>
               </div>
               <div className="flex">
                 {isCurrentUser ? (
@@ -59,10 +57,7 @@ function Card({ items }: CardProps) {
                     </button>
                   </>
                 ) : (
-                  <button
-                    className="flex items-center gap-1 justify-center rounded-md p-1 w-20 font-bold hover:bg-indigo-300"
-                    onClick={() => deleteComment(comment.id)}
-                  >
+                  <button className="flex items-center gap-1 justify-center rounded-md p-1 w-20 font-bold hover:bg-indigo-300">
                     <img src="./images/icon-reply.svg" alt="reply-icon" />
                     <p style={{ color: "#5357B6" }}>REPLY</p>
                   </button>

@@ -9,7 +9,7 @@ export type User = {
 export type Reply = {
   id: any;
   content: string;
-  createAt: string;
+  createdAt: string;
   score: number;
   replyingTo: string;
   user: User;
@@ -18,7 +18,7 @@ export type Reply = {
 export type Comments = {
   id: any;
   content: string;
-  createAt: string;
+  createdAt: string;
   score: number;
   user: User;
   replies: Reply[];

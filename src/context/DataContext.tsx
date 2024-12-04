@@ -1,6 +1,8 @@
+import { v4 as uuidv4 } from "uuid";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { Comments, User } from "../types/dataType";
 import {
+  addComment,
   deleteComment,
   getComments,
   getCurrentUser,
@@ -13,6 +15,7 @@ export const DataContext = createContext<{
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   deleteComment: (id: string) => void;
+  addCommentUser: (content: string) => void;
 } | null>(null);
 
 export const DataProvider = ({ children }: { children: ReactNode }) => {
@@ -76,6 +79,29 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const addCommentUser = (content: string) => {
+    if (!currentUser) {
+      console.error("User is not logged in.");
+      return;
+    }
+
+    const data = {
+      id: uuidv4(),
+      content: content,
+      createdAt: new Date().toISOString(),
+      score: 0,
+      user: currentUser,
+      replies: [],
+    };
+
+    try {
+      addComment(data);
+      setAllComments((prev) => [data, ...prev]);
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -84,6 +110,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
         currentUser,
         setCurrentUser,
         deleteComment: handleDelete,
+        addCommentUser: addCommentUser,
       }}
     >
       {children}

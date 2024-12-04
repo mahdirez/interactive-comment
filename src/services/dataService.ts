@@ -11,7 +11,7 @@ export const getCurrentUser = async (): Promise<User> => {
 
 export const getComments = async (): Promise<Comments[]> => {
   const response = await axios.get(API_URL);
-  return response.data;
+  return response.data.reverse();
 };
 
 export const addComment = async (
