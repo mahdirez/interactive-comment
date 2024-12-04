@@ -1,22 +1,29 @@
 import { useDataContext } from "../hooks/useDataContext";
 import { Comments, Reply } from "../types/dataType";
-import { formatDistanceToNow } from "date-fns";
+import { useState } from "react";
 
 type CardProps = {
   items: Comments;
 };
 
 function Card({ items }: CardProps) {
-  const { currentUser, deleteComment } = useDataContext();
+  const { currentUser, deleteComment, replyComment } = useDataContext();
+  const [replyBox, setReplyBox] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState<string>("");
+
+  const handleReplySubmit = (id: string) => {
+    replyComment(id, replyText);
+    setReplyBox(null);
+    setReplyText("");
+  };
 
   const renderComment = (comment: Comments | Reply, isReply = false) => {
     const isCurrentUser = comment.user.username === currentUser?.username;
-    console.log(comment.createdAt);
 
     return (
       <div className="flex w-screen items-center justify-center">
         {isReply && (
-          <div className="ml-20 border border-gray-300  self-stretch mr-4"></div>
+          <div className="ml-20 border border-gray-300 self-stretch mr-4"></div>
         )}
         <div
           className={`bg-white w-1/2 min-h-36 rounded p-6 flex gap-4 my-5`}
@@ -57,14 +64,40 @@ function Card({ items }: CardProps) {
                     </button>
                   </>
                 ) : (
-                  <button className="flex items-center gap-1 justify-center rounded-md p-1 w-20 font-bold hover:bg-indigo-300">
-                    <img src="./images/icon-reply.svg" alt="reply-icon" />
-                    <p style={{ color: "#5357B6" }}>REPLY</p>
-                  </button>
+                  !isReply && (
+                    <button
+                      className="flex items-center gap-1 justify-center rounded-md p-1 w-20 font-bold hover:bg-indigo-300"
+                      onClick={() =>
+                        setReplyBox(replyBox === comment.id ? null : comment.id)
+                      }
+                    >
+                      <img src="./images/icon-reply.svg" alt="reply-icon" />
+                      <p style={{ color: "#5357B6" }}>REPLY</p>
+                    </button>
+                  )
                 )}
               </div>
             </div>
             <p className="text-gray-500">{comment.content}</p>
+
+            {replyBox === comment.id && (
+              <div className="mt-4">
+                <textarea
+                  className="w-full border border-gray-300 rounded p-2"
+                  placeholder="Write your reply..."
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                />
+                <div className="flex justify-end mt-2">
+                  <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                    onClick={() => handleReplySubmit(comment.id)}
+                  >
+                    Send
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

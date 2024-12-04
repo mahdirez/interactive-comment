@@ -62,7 +62,22 @@
         },
         "username": "new comment"
       },
-      "replies": []
+      "replies": [
+        {
+          "id": 500,
+          "content": "Yes, I plan to open-source it once I clean up the code and add documentation.",
+          "createdAt": "3 days ago",
+          "score": 5,
+          "replyingTo": "maxblagun",
+          "user": {
+            "image": {
+              "png": "./images/avatars/image-ramsesmiron.png",
+              "webp": "./images/avatars/image-ramsesmiron.webp"
+            },
+            "username": "ramsesmiron"
+          }
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { Comments, User } from "../types/dataType";
+import { Comments, Reply, User } from "../types/dataType";
 import {
   addComment,
   deleteComment,
@@ -16,6 +16,7 @@ export const DataContext = createContext<{
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   deleteComment: (id: string) => void;
   addCommentUser: (content: string) => void;
+  replyComment: (id: string, content: string) => void;
 } | null>(null);
 
 export const DataProvider = ({ children }: { children: ReactNode }) => {
@@ -102,6 +103,48 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const replyComment = async (idParent: string, content: string) => {
+    if (!currentUser) {
+      console.error("user is not logged in");
+      return;
+    }
+    const replyingToItem = allComments.find((item) => item.id === idParent);
+
+    if (!replyingToItem) {
+      console.log("parent comment not found.");
+      return;
+    }
+
+    const data: Reply = {
+      id: uuidv4(),
+      content: content,
+      createdAt: new Date().getTime().toLocaleString(),
+      score: 0,
+      replyingTo: replyingToItem?.user.username,
+      user: {
+        image: {
+          png: currentUser?.image.png,
+          webp: currentUser?.image.webp,
+        },
+        username: currentUser?.username,
+      },
+    };
+
+    const addReply = {
+      ...replyingToItem,
+      replies: [...replyingToItem.replies, data],
+    };
+
+    try {
+      const updateData = await updateComment(addReply);
+      setAllComments((prev) =>
+        prev.map((comment) => (comment.id === idParent ? updateData : comment))
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -111,6 +154,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
         setCurrentUser,
         deleteComment: handleDelete,
         addCommentUser: addCommentUser,
+        replyComment: replyComment,
       }}
     >
       {children}
